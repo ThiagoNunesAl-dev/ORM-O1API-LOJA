@@ -10,6 +10,7 @@ namespace ORM_API_Loja.Interfaces
     {
         List<Produto> Listar();
         Produto BuscarPorId(Guid id);
+        List<Produto> BuscarPorNome(string nome);
         void Adicionar(Produto p);
         void Editar(Produto p);
         void Remover(Guid id);

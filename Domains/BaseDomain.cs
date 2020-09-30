@@ -9,7 +9,7 @@ namespace ORM_API_Loja.Domains
     public abstract class BaseDomain
     {
         [Key]
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         public BaseDomain ()
         {

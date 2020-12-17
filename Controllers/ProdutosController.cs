@@ -24,45 +24,121 @@ namespace ORM_API_Loja.Controllers
 
         // GET: api/<ProdutosController>
         [HttpGet]
-        public List<Produto> Get()
+        public IActionResult Get()
         {
-            return _produtoRepository.Listar();
+            try { 
+                var produtos = _produtoRepository.Listar();
+                
+                if(produtos.Count == 0)
+                {
+                    return NoContent();
+                }
+
+                return Ok(produtos);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET api/<ProdutosController>/5
         [HttpGet("{id}")]
-        public Produto Get(Guid id)
+        public IActionResult Get(Guid id)
         {
-            return _produtoRepository.BuscarPorId(id);
+            try
+            {
+                Produto produto = _produtoRepository.BuscarPorId(id);
+
+                if(produto == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(produto);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET api/<ProdutosController>/5
         [HttpGet("{id}")]
-        public List<Produto> Get(string nome)
+        public IActionResult Get(string nome)
         {
-            return _produtoRepository.BuscarPorNome(nome);
+            try
+            {
+                var produtos = _produtoRepository.BuscarPorNome(nome);
+
+                if (produtos.Count == 0)
+                    return NoContent();
+
+                return Ok(produtos);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         // POST api/<ProdutosController>
         [HttpPost]
-        public void Post(Produto p)
+        public IActionResult Post(Produto p)
         {
-            _produtoRepository.Adicionar(p);
+            try
+            {
+                _produtoRepository.Adicionar(p);
+
+                return Ok(p);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT api/<ProdutosController>/5
         [HttpPut("{id}")]
-        public void Put(Guid id, Produto p)
+        public IActionResult Put(Guid id, Produto p)
         {
-            p.Id = id;
-            _produtoRepository.Editar(p);
+            try
+            {
+                var produtoTemp = _produtoRepository.BuscarPorId(id);
+
+                if(produtoTemp == null)
+                {
+                    return NotFound();
+                }
+
+                p.Id = id;
+                _produtoRepository.Editar(p);
+
+                return Ok(p);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE api/<ProdutosController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public IActionResult Delete(Guid id)
         {
-            _produtoRepository.Remover(id);
+            try
+            {
+                var produto = _produtoRepository.BuscarPorId(id);
+
+                if (produto == null)
+                    return NotFound();
+
+                _produtoRepository.Remover(id);
+                return Ok(produto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

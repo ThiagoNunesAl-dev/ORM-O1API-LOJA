@@ -101,10 +101,7 @@ namespace ORM_API_Loja.Repositories
             try
             {
                 Produto pTemp = BuscarPorId(p.Id);
-                if (pTemp == null)
-                {
-                    throw new Exception("Produto não encontrado.");
-                }
+                
                 pTemp.Nome = p.Nome;
                 pTemp.Preco = p.Preco;
 
